@@ -49,7 +49,7 @@ SET default_with_oids = false;
 CREATE TABLE user_auth.auth (
     id integer DEFAULT nextval('user_auth.auth_id_seq'::regclass) NOT NULL,
     salt text NOT NULL,
-    token text NOT NULL,
+    token text,
     username text NOT NULL,
     pass_hash text NOT NULL
 );
