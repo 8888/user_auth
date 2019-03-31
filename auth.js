@@ -69,6 +69,10 @@ class Auth {
     }
     return response;
   }
+
+  async logout(username) {
+    await this.dbInterface.setToken(username, null)
+  }
 }
 
 module.exports = Auth;

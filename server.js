@@ -63,3 +63,13 @@ app.post('/user/confirmToken', async (req, res) => {
     res.status(401).json({status: 401, error: 'User is not authenticated!'});
   }
 });
+
+app.post('/user/logout', async (req, res) => {
+  const username = req.body.username;
+  if (username) {
+    await auth.logout(username);
+    res.status(200).json({status: 200});
+  } else {
+    res.status(400).json({status: 400, error: 'Data is invalid'});
+  }
+});
