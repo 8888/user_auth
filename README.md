@@ -14,6 +14,11 @@ Restore the databse
 $ cat schema.sql | docker exec -i pg-docker psql -U postgres
 ```
 
+Start the server
+```
+$ npm run serve
+```
+
 # Cleanup
 Stop the container
 ```
