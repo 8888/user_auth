@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/betterin30days/user_auth#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "pg": "^7.9.0"
   }
