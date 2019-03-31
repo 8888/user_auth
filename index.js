@@ -25,6 +25,7 @@ function login(response) {
   window.localStorage.setItem('username', response.username);
   window.localStorage.setItem('token', response.token);
   updateMessage();
+  window.location.href = 'private.html';
 }
 
 function onClickLogin() {
