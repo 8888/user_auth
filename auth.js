@@ -57,6 +57,18 @@ class Auth {
     }
     return response;
   }
+
+  async authorizeUser(username, token) {
+    let response = {
+      success: false,
+      message: 'User is not authenticated!',
+    };
+    if (await this.dbInterface.userIsAuthorized(username, token)) {
+      response.success = true;
+      response.message = 'User is authenticated'
+    }
+    return response;
+  }
 }
 
 module.exports = Auth;

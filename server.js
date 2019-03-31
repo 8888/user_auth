@@ -49,3 +49,17 @@ app.post('/user/login', async (req, res) => {
     res.status(400).json({status: 400, error: 'Data is invalid'});
   }
 });
+
+app.post('/user/confirmToken', async (req, res) => {
+  const credentials = req.body;
+  if (credentials.username && credentials.token) {
+    const result = await auth.authorizeUser(credentials.username, credentials.token);
+    if (result.success) {
+      res.status(200).json({status: 200, username: credentials.username});
+    } else {
+      res.status(401).json({status: 401, error: result.message});
+    }
+  } else {
+    res.status(401).json({status: 401, error: 'User is not authenticated!'});
+  }
+});
