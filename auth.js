@@ -36,6 +36,27 @@ class Auth {
     }
     return response;
   }
+
+  async loginUser(username, password) {
+    let response = {
+      success: false,
+      message: 'Either the username or password is incorrect',
+      token: '',
+    };
+    const saltResult = await this.dbInterface.fetchSalt(username);
+    if (saltResult.success) {
+      const hash = this.hashPassword(password, saltResult.salt);
+      if (await this.dbInterface.userAndPassMatches(username, hash)) {
+        const token = this.generateRandomValue();
+        if (await this.dbInterface.setToken(username, token)) {
+          response.success = true;
+          response.token = token;
+          response.message = 'Login successful!'
+        }
+      }
+    }
+    return response;
+  }
 }
 
 module.exports = Auth;
