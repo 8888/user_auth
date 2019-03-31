@@ -5,7 +5,6 @@ $ docker pull postgres
 ```
 
 Run a docker image with postgres. You can run without the `-v` arg and value to prevent data from persisting and not need to create the directories.
-
 ```
 $ docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/userAuth:/var/lib/postgresql/data postgres
 ```
