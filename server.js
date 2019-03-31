@@ -27,3 +27,17 @@ app.post('/user/register', async (req, res) => {
     res.status(400).json({status: 400, error: 'Data is invalid'});
   }
 });
+
+app.post('/user/login', async (req, res) => {
+  const credentials = req.body;
+  if (credentials.username && credentials.password) {
+    const result = await auth.loginUser(credentials.username, credentials.password);
+    if (result.success) {
+      res.status(200).json({status: 200, token: result.token});
+    } else {
+      res.status(401).json({status: 401, error: result.message});
+    }
+  } else {
+    res.status(400).json({status: 400, error: 'Data is invalid'});
+  }
+});
