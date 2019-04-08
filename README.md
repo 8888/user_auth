@@ -41,19 +41,10 @@ For reference, below is the SQL used to create the intial db
 ```sql
 CREATE DATABASE user_auth;
 \c user_auth
-CREATE SCHEMA user_auth;
-CREATE TABLE user_auth.auth;
-CREATE SEQUENCE user_auth.auth_id_seq
-  START WITH 1
-  INCREMENT BY 1
-  NO MINVALUE
-  NO MAXVALUE
-  CACHE 1;
-CREATE TABLE user_auth.auth (
-  id integer DEFAULT nextval('user_auth.auth_id_seq'::regclass) NOT NULL,
-  salt text NOT NULL,
-  token text,
-  username text NOT NULL,
-  pass_hash text NOT NULL
+CREATE TABLE users(
+  id serial PRIMARY KEY,
+  username VARCHAR (50) UNIQUE NOT NULL,
+  password VARCHAR (50) NOT NULL,
+  salt VARCHAR (50) NOT NULL
 );
 ```

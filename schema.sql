@@ -15,20 +15,30 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: user_auth; Type: SCHEMA; Schema: -; Owner: postgres
---
+SET default_tablespace = '';
 
-CREATE SCHEMA user_auth;
-
-
-ALTER SCHEMA user_auth OWNER TO postgres;
+SET default_with_oids = false;
 
 --
--- Name: auth_id_seq; Type: SEQUENCE; Schema: user_auth; Owner: postgres
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE user_auth.auth_id_seq
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    username character varying(50) NOT NULL,
+    password character varying(50) NOT NULL,
+    salt character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -36,26 +46,37 @@ CREATE SEQUENCE user_auth.auth_id_seq
     CACHE 1;
 
 
-ALTER TABLE user_auth.auth_id_seq OWNER TO postgres;
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
+ALTER TABLE public.users_id_seq OWNER TO postgres;
 
 --
--- Name: auth; Type: TABLE; Schema: user_auth; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-CREATE TABLE user_auth.auth (
-    id integer DEFAULT nextval('user_auth.auth_id_seq'::regclass) NOT NULL,
-    salt text NOT NULL,
-    token text,
-    username text NOT NULL,
-    pass_hash text NOT NULL
-);
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
-ALTER TABLE user_auth.auth OWNER TO postgres;
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
 
 --
 -- PostgreSQL database dump complete
