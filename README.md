@@ -1,17 +1,13 @@
 # Setup
-If you do not have the docker postgres image, it can be pulled from the docker container repo.
+Run a docker image with postgres.
 ```
-$ docker pull postgres
-```
-
-Run a docker image with postgres. You can run without the `-v` arg and value to prevent data from persisting and not need to create the directories.
-```
-$ docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 -v $HOME/docker/volumes/userAuth:/var/lib/postgresql/data postgres
+$ docker-compose up -d --remove-orphans
 ```
 
-Restore the databse
+Restore the database
 ```
-$ cat schema.sql | docker exec -i pg-docker psql -U postgres
+$ createdb -h localhost user_auth
+$ psql -h localhost -f schema.sql user_auth
 ```
 
 Start the server
@@ -20,27 +16,29 @@ $ npm run serve
 ```
 
 # Cleanup
-Stop the container
+Stop the vm without deleting the database
 ```
-$ docker stop pg-docker
+$ docker-compose stop
+```
+
+Stop the vm and remove all data
+```
+$ docker-compose down
 ```
 
 # Connect to psql
 ```
-$ psql -h localhost -U postgres -d postgres
+$ psql -h localhost -d postgres
 ```
-The password should be `docker`.
 
 # Create a dump of the schema
 ```
-$ docker exec pg-docker pg_dump -s -U postgres user_auth > schema.sql
+$ docker exec user_auth_postgres_1 pg_dump -s -U $USER user_auth > schema.sql
 ```
 
 # Initial DB creation
-For reference, below is the SQL used to create the intial db
+For reference, below is the SQL used to create the intial db. The database is created by the `createdb` command above in setup
 ```sql
-CREATE DATABASE user_auth;
-\c user_auth
 CREATE TABLE users(
   id serial PRIMARY KEY,
   username VARCHAR (50) UNIQUE NOT NULL,

@@ -20,7 +20,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: sessions; Type: TABLE; Schema: public; Owner: postgres
+-- Name: sessions; Type: TABLE; Schema: public; Owner: leecostello
 --
 
 CREATE TABLE public.sessions (
@@ -31,10 +31,10 @@ CREATE TABLE public.sessions (
 );
 
 
-ALTER TABLE public.sessions OWNER TO postgres;
+ALTER TABLE public.sessions OWNER TO leecostello;
 
 --
--- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: leecostello
 --
 
 CREATE SEQUENCE public.sessions_id_seq
@@ -46,17 +46,17 @@ CREATE SEQUENCE public.sessions_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.sessions_id_seq OWNER TO postgres;
+ALTER TABLE public.sessions_id_seq OWNER TO leecostello;
 
 --
--- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: leecostello
 --
 
 ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
+-- Name: users; Type: TABLE; Schema: public; Owner: leecostello
 --
 
 CREATE TABLE public.users (
@@ -67,10 +67,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO postgres;
+ALTER TABLE public.users OWNER TO leecostello;
 
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: leecostello
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -82,31 +82,31 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.users_id_seq OWNER TO postgres;
+ALTER TABLE public.users_id_seq OWNER TO leecostello;
 
 --
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: leecostello
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: sessions id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: sessions id; Type: DEFAULT; Schema: public; Owner: leecostello
 --
 
 ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: leecostello
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: leecostello
 --
 
 ALTER TABLE ONLY public.sessions
@@ -114,7 +114,7 @@ ALTER TABLE ONLY public.sessions
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: leecostello
 --
 
 ALTER TABLE ONLY public.users
@@ -122,7 +122,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: leecostello
 --
 
 ALTER TABLE ONLY public.users
@@ -130,7 +130,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: sessions sessions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: sessions sessions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: leecostello
 --
 
 ALTER TABLE ONLY public.sessions
