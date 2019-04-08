@@ -47,4 +47,10 @@ CREATE TABLE users(
   password VARCHAR (50) NOT NULL,
   salt VARCHAR (50) NOT NULL
 );
+CREATE TABLE sessions(
+  id serial PRIMARY KEY,
+  token VARCHAR (50) NOT NULL,
+  user_id INTEGER REFERENCES users(id),
+  created_at TIMESTAMPTZ NOT NULL
+);
 ```
