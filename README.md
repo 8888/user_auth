@@ -28,12 +28,12 @@ $ docker-compose down
 
 # Connect to psql
 ```
-$ psql -h localhost -d postgres
+$ psql -h localhost -d user_auth
 ```
 
 # Create a dump of the schema
 ```
-$ docker exec user_auth_postgres_1 pg_dump -s -U $USER user_auth > schema.sql
+$ pg_dump -s --clean --no-owner -h localhost user_auth > schema.sql
 ```
 
 # Initial DB creation
@@ -49,6 +49,6 @@ CREATE TABLE sessions(
   id serial PRIMARY KEY,
   token VARCHAR (50) NOT NULL,
   user_id INTEGER REFERENCES users(id),
-  created_at TIMESTAMPTZ NOT NULL
+  created_at TIMESTAMPTZ default now() NOT NULL
 );
 ```
