@@ -5,7 +5,7 @@ const { Pool } = require('pg');
 class DbInterface {
   constructor() {
     this.pool = new Pool({
-      connectionString: 'postgresql://postgres:docker@localhost:5432/user_auth'
+      connectionString: 'postgresql://localhost/user_auth'
     });
   }
 

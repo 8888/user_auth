@@ -28,7 +28,7 @@ $ docker-compose down
 
 # Connect to psql
 ```
-$ psql -h localhost -d user_auth
+$ psql postgresql://localhost/user_auth
 ```
 
 # Create a dump of the schema
