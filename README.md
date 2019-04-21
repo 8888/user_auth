@@ -12,7 +12,7 @@ $ psql -h localhost -f schema.sql user_auth
 
 Start the server
 ```
-$ npm run serve
+$ npm run watch
 ```
 
 # Cleanup
