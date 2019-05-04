@@ -3,4 +3,4 @@ const sql = (strings, ...values) => {
   return { text, values };
 };
 
-module.exports = { sql };
+module.exports = sql;
