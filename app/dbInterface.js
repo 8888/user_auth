@@ -9,22 +9,6 @@ class DbInterface {
     });
   }
 
-  async setToken(username, token) {
-    const text = `
-      UPDATE user_auth.auth
-      SET token=$1
-      WHERE username=$2;
-    `;
-    const values = [token, username];
-    try {
-      await this.pool.query(text, values);
-      return true;
-    } catch(err) {
-      console.log('Error executing query', err.stack);
-      return false;
-    }
-  }
-
   async addUser(salt, username, passHash) {
     const text = `
       INSERT INTO user_auth.auth (salt, username, pass_hash)
