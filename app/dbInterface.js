@@ -9,21 +9,6 @@ class DbInterface {
     });
   }
 
-  async addUser(salt, username, passHash) {
-    const text = `
-      INSERT INTO user_auth.auth (salt, username, pass_hash)
-      VALUES ($1, $2, $3);
-    `;
-    const values = [salt, username, passHash];
-    try {
-      await this.pool.query(text, values);
-      return true;
-    } catch(err) {
-      console.log('Error executing query', err.stack);
-      return false;
-    }
-  }
-
   async fetchSalt(username) {
     let response = {
       success: false,
