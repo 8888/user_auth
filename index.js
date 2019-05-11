@@ -27,10 +27,6 @@ function clearForm() {
 }
 
 function login(response) {
-  clearForm();
-  if (response.status !== 200) {
-    return updateMessage(response.error);
-  }
   window.localStorage.setItem('username', response.username);
   window.localStorage.setItem('token', response.token);
   updateMessage();
@@ -40,16 +36,18 @@ function login(response) {
 function onClickLogin() {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-  const body = {username, password};
+  const body = { username, password };
   const init = {
     method: 'post',
-    headers: {'Content-type': 'application/json'},
+    headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(body)
   };
-  fetch('http://localhost:8080/user/login', init)
+  fetch('http://localhost:8080/users/login', init)
+    .then(wasResponseSuccessful)
     .then(readResponseAsJson)
     .then(login)
     .catch(logError);
+  clearForm();
 }
 
 function register(response) {
