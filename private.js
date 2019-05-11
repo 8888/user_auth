@@ -1,5 +1,12 @@
 'use strict';
 
+function wasResponseSuccessful(response) {
+  if (response.ok) return response;
+
+  redirectUser();
+  return Promise.reject(response.status);
+}
+
 function readResponseAsJson(response) {
   return response.json();
 }
@@ -19,22 +26,20 @@ function updateUser(username) {
 }
 
 function handleAuthResponse(response) {
-  if (response.status !== 200) {
-    return redirectUser();
-  }
   updateUser(response.username);
 }
 
 function authUser() {
   const username = window.localStorage.getItem('username');
   const token = window.localStorage.getItem('token');
-  const body = {username, token};
+  const body = { username, token };
   const init = {
     method: 'post',
     headers: {'Content-type': 'application/json'},
     body: JSON.stringify(body)
   };
-  fetch('http://localhost:8080/user/confirmToken', init)
+  fetch('http://localhost:8080/users/confirmToken', init)
+    .then(wasResponseSuccessful)
     .then(readResponseAsJson)
     .then(handleAuthResponse)
     .catch(logError);

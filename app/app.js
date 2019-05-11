@@ -23,20 +23,6 @@ const server = app.listen(process.env.PORT || 8080, () => {
   console.log(`App now running on port ${port}`);
 });
 
-app.post('/user/confirmToken', async (req, res) => {
-  const credentials = req.body;
-  if (credentials.username && credentials.token) {
-    const result = await auth.authorizeUser(credentials.username, credentials.token);
-    if (result.success) {
-      res.status(200).json({status: 200, username: credentials.username});
-    } else {
-      res.status(401).json({status: 401, error: result.message});
-    }
-  } else {
-    res.status(401).json({status: 401, error: 'User is not authenticated!'});
-  }
-});
-
 app.post('/user/logout', async (req, res) => {
   const username = req.body.username;
   if (username) {

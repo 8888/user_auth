@@ -31,4 +31,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/confirmToken', async (req, res) => {
+  const { username, token } = req.body;
+  if (username && token) {
+    const result = await auth.authorizeUser(username, token);
+    if (result.success) {
+      res.status(200).json({ username });
+    } else {
+      res.status(401).json({ error: result.message });
+    }
+  } else {
+    res.status(401).json({ error: 'User is not authenticated!' });
+  }
+});
+
 module.exports = router;
