@@ -2,12 +2,11 @@
 
 const crypto = require('crypto');
 
-const usernameExists = require('./queries/usernameExists.js');
-const userAndPassMatches = require('./queries/userAndPassMatches.js');
-const userIsAuthorized = require('./queries/userIsAuthorized.js');
-const fetchSalt = require('./queries/fetchSalt.js');
-const setToken = require('./services/setToken.js');
-const addUser = require('./services/addUser.js');
+const usernameExists = require('./queries/usernameExists');
+const userIsAuthorized = require('./queries/userIsAuthorized');
+const fetchUser = require('./queries/fetchUser');
+const setToken = require('./services/setToken');
+const addUser = require('./services/addUser');
 
 const generateRandomValue = (bytes = 32) => {
   return crypto.randomBytes(bytes).toString('hex');
@@ -38,16 +37,17 @@ const registerUser = async (username, password) => {
   return response;
 }
 
-const loginUser = async (username, password) => {
+const loginUser = async (user, pass) => {
   let response = {
     success: false,
     message: 'Either the username or password is incorrect',
     token: '',
   };
-  const salt = await fetchSalt(username);
-  if (salt) {
-    const hash = hashPassword(password, salt);
-    if (await userAndPassMatches(username, hash)) {
+
+  const { username, salt, password } = await fetchUser(user);
+  if (username && salt && password) {
+    const hash = hashPassword(pass, salt);
+    if (hash === password) {
       const token = generateRandomValue(16);
       if (await setToken(username, token)) {
         response.success = true;
