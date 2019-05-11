@@ -1,5 +1,14 @@
 'use strict';
 
+function wasResponseSuccessful(response) {
+  if (response.ok) return response;
+
+  response.json().then(res => {
+    updateMessage(res.error);
+  });
+  return Promise.reject(response.status);
+}
+
 function readResponseAsJson(response) {
   return response.json();
 }
@@ -44,10 +53,6 @@ function onClickLogin() {
 }
 
 function register(response) {
-  clearForm();
-  if (response.status !== 201) {
-    return updateMessage(response.error);
-  }
   updateMessage('User successfully registered, please log in!');
 }
 
@@ -60,8 +65,10 @@ function onClickRegister() {
     headers: {'Content-type': 'application/json'},
     body: JSON.stringify(body)
   };
-  fetch('http://localhost:8080/user/register', init)
+  fetch('http://localhost:8080/users/register', init)
+    .then(wasResponseSuccessful)
     .then(readResponseAsJson)
     .then(register)
     .catch(logError);
+  clearForm();
 }

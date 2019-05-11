@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const usersRouter = require('./routes/users');
 const auth = require('./auth.js');
 
 const allowCrossOrigin = (req, res, next) => {
@@ -15,24 +16,11 @@ const allowCrossOrigin = (req, res, next) => {
 const app = express();
 app.use(bodyParser.json());
 app.use(allowCrossOrigin);
+app.use('/users', usersRouter);
 
 const server = app.listen(process.env.PORT || 8080, () => {
   const port = server.address().port;
   console.log(`App now running on port ${port}`);
-});
-
-app.post('/user/register', async (req, res) => {
-  const credentials = req.body;
-  if (credentials.username && credentials.password) {
-    const result = await auth.registerUser(credentials.username, credentials.password);
-    if (result.success) {
-      res.status(201).json({status: 201, user: credentials.username});
-    } else {
-      res.status(409).json({status: 409, error: result.message});
-    }
-  } else {
-    res.status(400).json({status: 400, error: 'Data is invalid'});
-  }
 });
 
 app.post('/user/login', async (req, res) => {
