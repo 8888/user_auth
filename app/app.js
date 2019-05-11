@@ -22,13 +22,3 @@ const server = app.listen(process.env.PORT || 8080, () => {
   const port = server.address().port;
   console.log(`App now running on port ${port}`);
 });
-
-app.post('/user/logout', async (req, res) => {
-  const username = req.body.username;
-  if (username) {
-    await auth.logout(username);
-    res.status(200).json({status: 200});
-  } else {
-    res.status(400).json({status: 400, error: 'Data is invalid'});
-  }
-});

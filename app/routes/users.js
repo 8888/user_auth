@@ -45,4 +45,14 @@ router.post('/confirmToken', async (req, res) => {
   }
 });
 
+router.post('/logout', async (req, res) => {
+  const username = req.body.username;
+  if (username) {
+    await auth.logout(username);
+    res.status(200);
+  } else {
+    res.status(400).json({ error: 'Data is invalid' });
+  }
+});
+
 module.exports = router;

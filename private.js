@@ -48,13 +48,13 @@ function authUser() {
 function onClickLogout() {
   const username = window.localStorage.getItem('username');
   if (username) {
-    const body = {username};
+    const body = { username };
     const init = {
       method: 'post',
       headers: {'Content-type': 'application/json'},
       body: JSON.stringify(body)
     };
-    fetch('http://localhost:8080/user/logout', init)
+    fetch('http://localhost:8080/users/logout', init)
       .catch(logError);
   }
   redirectUser();
