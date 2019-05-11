@@ -41,3 +41,13 @@ exports.confirmToken = async (req, res) => {
     res.status(401).json({ error: 'User is not authenticated!' });
   }
 };
+
+exports.logout = async (req, res) => {
+  const username = req.body.username;
+  if (username) {
+    await auth.logout(username);
+    res.status(200);
+  } else {
+    res.status(400).json({ error: 'Data is invalid' });
+  }
+};
