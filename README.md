@@ -15,6 +15,8 @@ Start the server
 $ npm run watch
 ```
 
+Navigate to [http://localhost:8080](http://localhost:8080)
+
 # Cleanup
 Stop the vm without deleting the database
 ```
