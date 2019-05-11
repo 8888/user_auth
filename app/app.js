@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const usersRouter = require('./routes/users');
-const auth = require('./auth.js');
 
 const allowCrossOrigin = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
