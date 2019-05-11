@@ -5,20 +5,7 @@ const auth = require('../auth');
 const usersController = require('../controllers/users');
 
 router.post('/register', usersController.register);
-
-router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  if (username && password) {
-    const result = await auth.loginUser(username, password);
-    if (result.success) {
-      res.status(200).json({ token: result.token, username });
-    } else {
-      res.status(401).json({ error: result.message });
-    }
-  } else {
-    res.status(400).json({ error: 'Data is invalid' });
-  }
-});
+router.post('/login', usersController.login);
 
 router.post('/confirmToken', async (req, res) => {
   const { username, token } = req.body;
