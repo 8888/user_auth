@@ -2,7 +2,8 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const Auth = require('./auth.js');
+
+const auth = require('./auth.js');
 
 const allowCrossOrigin = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -19,8 +20,6 @@ const server = app.listen(process.env.PORT || 8080, () => {
   const port = server.address().port;
   console.log(`App now running on port ${port}`);
 });
-
-const auth = new Auth();
 
 app.post('/user/register', async (req, res) => {
   const credentials = req.body;

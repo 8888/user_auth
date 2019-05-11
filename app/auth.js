@@ -1,78 +1,83 @@
 'use strict';
 
 const crypto = require('crypto');
-const DbInterface = require('./dbInterface.js');
 
-class Auth {
-  constructor() {
-    this.dbInterface = new DbInterface();
-  }
+const usernameExists = require('./queries/usernameExists.js');
+const userAndPassMatches = require('./queries/userAndPassMatches.js');
+const userIsAuthorized = require('./queries/userIsAuthorized.js');
+const fetchSalt = require('./queries/fetchSalt.js');
+const setToken = require('./services/setToken.js');
+const addUser = require('./services/addUser.js');
 
-  generateRandomValue() {
-    return crypto.randomBytes(32).toString('hex');
-  }
-
-  hashPassword(secret, salt) {
-    const hash = crypto.pbkdf2Sync(secret, salt, 100000, 64, 'sha256');
-    return hash.toString('hex');
-  }
-
-  async registerUser(username, password) {
-    let response = {
-      success: false,
-      message: '',
-    };
-    if (await this.dbInterface.userNameExists(username)) {
-      response.message = 'username already exists!';
-    } else {
-      const salt = this.generateRandomValue();
-      const hash = this.hashPassword(password, salt);
-      if (await this.dbInterface.addUser(salt, username, hash)) {
-        response.success = true;
-        response.message = 'Registration successful!';
-      } else {
-        response.message = 'Error registering user, please try again!';
-      }
-    }
-    return response;
-  }
-
-  async loginUser(username, password) {
-    let response = {
-      success: false,
-      message: 'Either the username or password is incorrect',
-      token: '',
-    };
-    const saltResult = await this.dbInterface.fetchSalt(username);
-    if (saltResult.success) {
-      const hash = this.hashPassword(password, saltResult.salt);
-      if (await this.dbInterface.userAndPassMatches(username, hash)) {
-        const token = this.generateRandomValue();
-        if (await this.dbInterface.setToken(username, token)) {
-          response.success = true;
-          response.token = token;
-          response.message = 'Login successful!'
-        }
-      }
-    }
-    return response;
-  }
-
-  async authorizeUser(username, token) {
-    let response = {
-      success: false,
-      message: 'User is not authenticated!',
-    };
-    if (await this.dbInterface.userIsAuthorized(username, token)) {
-      response.success = true;
-      response.message = 'User is authenticated'
-    }
-    return response;
-  }
-
-  async logout(username) {
-    await this.dbInterface.setToken(username, null)
-  }
+const generateRandomValue = (bytes = 32) => {
+  return crypto.randomBytes(bytes).toString('hex');
 }
 
-module.exports = Auth;
+const hashPassword = (secret, salt) => {
+  const hash = crypto.pbkdf2Sync(secret, salt, 100000, 32, 'sha256');
+  return hash.toString('hex');
+}
+
+const registerUser = async (username, password) => {
+  let response = {
+    success: false,
+    message: '',
+  };
+  if (await usernameExists(username)) {
+    response.message = 'username already exists!';
+  } else {
+    const salt = generateRandomValue();
+    const hash = hashPassword(password, salt);
+    if (await addUser(username, hash, salt)) {
+      response.success = true;
+      response.message = 'Registration successful!';
+    } else {
+      response.message = 'Error registering user, please try again!';
+    }
+  }
+  return response;
+}
+
+const loginUser = async (username, password) => {
+  let response = {
+    success: false,
+    message: 'Either the username or password is incorrect',
+    token: '',
+  };
+  const salt = await fetchSalt(username);
+  if (salt) {
+    const hash = hashPassword(password, salt);
+    if (await userAndPassMatches(username, hash)) {
+      const token = generateRandomValue(16);
+      if (await setToken(username, token)) {
+        response.success = true;
+        response.token = token;
+        response.message = 'Login successful!'
+      }
+    }
+  }
+  return response;
+}
+
+const authorizeUser = async (username, token) => {
+  let response = {
+    success: false,
+    message: 'User is not authenticated!',
+  };
+  if (await userIsAuthorized(username, token)) {
+    response.success = true;
+    response.message = 'User is authenticated'
+  }
+  return response;
+}
+
+const logout = async (username) => {
+  // TODO: expire token
+}
+
+module.exports = {
+  registerUser,
+  loginUser,
+  authorizeUser,
+  logout
+};
