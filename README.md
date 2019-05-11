@@ -42,8 +42,8 @@ For reference, below is the SQL used to create the intial db. The database is cr
 CREATE TABLE users(
   id serial PRIMARY KEY,
   username VARCHAR (50) UNIQUE NOT NULL,
-  password VARCHAR (50) NOT NULL,
-  salt VARCHAR (50) NOT NULL
+  password VARCHAR (64) NOT NULL,
+  salt VARCHAR (64) NOT NULL
 );
 CREATE TABLE sessions(
   id serial PRIMARY KEY,

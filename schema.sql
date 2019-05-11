@@ -98,8 +98,8 @@ ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 CREATE TABLE public.users (
     id integer NOT NULL,
     username character varying(50) NOT NULL,
-    password character varying(50) NOT NULL,
-    salt character varying(50) NOT NULL
+    password character varying(64) NOT NULL,
+    salt character varying(64) NOT NULL
 );
 
 
